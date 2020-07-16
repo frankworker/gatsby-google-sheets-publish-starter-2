@@ -34,8 +34,8 @@ function ItemCard(props) {
     i18n.changeLanguage(locale);
   }
 
-  const title = withLanguage(i18n, _get(item, 'node', {}), 'title');
-  const detail = withLanguage(i18n, _get(item, 'node', {}), 'detail');
+  const title = withLanguage(i18n, _get(item, 'title', {}), 'title');
+  const detail = withLanguage(i18n, _get(item, 'title', {}), 'title');
 
   return (
     <Card className={classes.root}>
