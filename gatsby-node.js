@@ -1,6 +1,7 @@
 const csv2json = require('csvtojson');
 const fetch = require('node-fetch');
 const config = require('./gatsby-config');
+const path = require('path');
 
 const { getPath } = require('./src/utils/urlHelper');
 
@@ -79,5 +80,56 @@ exports.onCreatePage = async ({ page, actions }) => {
       });
     }
     resolve();
+  });
+};
+
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions;
+
+  return graphql(`
+    {
+      allItem {
+        edges {
+          node {
+            id
+            title_en
+            title_zh
+            description_en
+            description_zh
+            detail_en
+            detail_zh
+            date
+            productImage {
+              publicURL
+            }
+          }
+        }
+      }
+    }
+  `).then(result => {
+    if (result.errors) {
+      result.errors.forEach(e => console.error(e.toString()));
+      return Promise.resolve(false);
+    }
+    const items = result.data.allItem.edges;
+
+    items.forEach(edge => {
+      LANGUAGES.forEach(lang => {
+        const id = edge.node.id;
+        const uri = getPath(lang, `/item/${id}`);
+        //const title = edge.node.title
+        //const videoPath = `/video/${_.kebabCase(title)}/`
+
+        createPage({
+          path: uri,
+          component: path.resolve(`./src/components/templates/SingleItem.js`),
+          context: {
+            uri,
+            itemId: id,
+            locale: lang,
+          },
+        });
+      });
+    });
   });
 };
