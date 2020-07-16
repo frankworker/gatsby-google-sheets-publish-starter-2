@@ -32,7 +32,7 @@ const styles = theme => ({
   },
 });
 
-const IndexPage = props => {
+const ItemPage = props => {
   const { data, classes } = props;
 
   const item = data.item;
@@ -49,7 +49,7 @@ const IndexPage = props => {
   );
 };
 
-export default withStyles(styles)(IndexPage);
+export default withStyles(styles)(ItemPage);
 
 export const ItemPageQuery = graphql`
   query ItemDetails($itemId: String!) {

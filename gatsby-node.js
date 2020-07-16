@@ -114,9 +114,9 @@ exports.createPages = ({ actions, graphql }) => {
     const items = result.data.allItem.edges;
 
     items.forEach(edge => {
-      LANGUAGES.forEach((lang, index) => {
+      LANGUAGES.forEach(lang => {
         const id = edge.node.id;
-        const uri = getPath(lang, `/item/${index}`);
+        const uri = getPath(lang, `/item/${id}`);
         //const title = edge.node.title
         //const videoPath = `/video/${_.kebabCase(title)}/`
 
