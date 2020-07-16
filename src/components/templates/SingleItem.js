@@ -39,10 +39,10 @@ const ItemPage = props => {
 
   return (
     <>
-      <SEO title="Home" />
+      <SEO title="item" />
       <div className={classes.root}>
         <div className={classes.flexBoxParentDiv}>
-          <ItemCard item={item} />
+          <ItemCard key={item.id} item={item} />
         </div>
       </div>
     </>
