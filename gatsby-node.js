@@ -16,21 +16,21 @@ const createPublishedGoogleSpreadsheetNode = async (
   // All table has first row reserved
   const result = await fetch(
     `${publishedURL}&single=true&output=csv&headers=0${
-    skipFirstLine ? "&range=A2:ZZ" : ""
+      skipFirstLine ? '&range=A2:ZZ' : ''
     }`
-  )
-  const data = await result.text()
-  const records = await csv2json().fromString(data)
+  );
+  const data = await result.text();
+  const records = await csv2json().fromString(data);
   records
     .filter(
-      r => alwaysEnabled || (isDebug && r.enabled === "N") || r.enabled === "Y"
+      r => alwaysEnabled || (isDebug && r.enabled === 'N') || r.enabled === 'Y'
     )
     .forEach((p, i) => {
       // create node for build time data example in the docs
       const meta = {
         // required fields
         id: createNodeId(
-          `${type.toLowerCase()}${subtype ? `-${subtype}` : ""}-${i}`
+          `${type.toLowerCase()}${subtype ? `-${subtype}` : ''}-${i}`
         ),
         parent: null,
         children: [],
@@ -38,25 +38,24 @@ const createPublishedGoogleSpreadsheetNode = async (
           type,
           contentDigest: createContentDigest(p),
         },
-      }
-      const node = { ...p, subtype, ...meta }
-      createNode(node)
-    })
-}
-
+      };
+      const node = { ...p, subtype, ...meta };
+      createNode(node);
+    });
+};
 
 exports.sourceNodes = async props => {
   await Promise.all([
     createPublishedGoogleSpreadsheetNode(
       props,
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vSp3oltt5RkGHzhSBQ24J9cNZXL8YWF4gvVdJFe5tXRgJ9lM9ZNxDeKWgPmYebAeIFuuts4ktiwh78f/pub?gid=0',
-      "KeyValue",
+      'KeyValue',
       { skipFirstLine: true }
     ),
     createPublishedGoogleSpreadsheetNode(
       props,
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMf21Q2u8IXza55EClr4tlEn-hpHwoyZGxqS1Wy9xfjDRF5fy0MGjice0i2ONIaoIdp72pHQem7O6Z/pub?gid=0',
-      "Item",
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOQRLgLGVryieIwB7HKJbEATt_G9SfkbFX_H7mNC1x3i9D3ZhQpzfRBQTqfdt4954lgET6vpuxJrXd/pub?gid=0',
+      'Item',
       { skipFirstLine: true }
     ),
   ]);
@@ -82,4 +81,3 @@ exports.onCreatePage = async ({ page, actions }) => {
     resolve();
   });
 };
-
