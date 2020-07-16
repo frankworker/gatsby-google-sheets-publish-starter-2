@@ -124,7 +124,7 @@ exports.createPages = ({ actions, graphql }) => {
           path: uri,
           component: path.resolve(`./src/components/templates/SingleItem.js`),
           context: {
-            uri,
+            uri: uri,
             itemId: id,
             locale: lang,
           },
