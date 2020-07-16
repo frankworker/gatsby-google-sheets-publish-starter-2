@@ -63,7 +63,7 @@ export const ItemPageQuery = graphql`
       detail_zh
       date
       productImage {
-        absolutePath
+        publicURL
       }
     }
   }
