@@ -4,7 +4,7 @@ import { graphql } from 'gatsby';
 import Layout from '@/components/layout';
 import SEO from '@/components/seo';
 
-import ItemCard from '@/components/ItemCard';
+import ItemCard from '@/components/ItemCard2';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
