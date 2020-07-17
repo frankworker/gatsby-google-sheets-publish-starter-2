@@ -70,6 +70,9 @@ function ItemCard(props) {
         <Typography variant="body2" color="textSecondary" component="p">
           {`${detail}`}
         </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {`${item.node.id}`}
+        </Typography>
       </CardContent>
     </Card>
   );

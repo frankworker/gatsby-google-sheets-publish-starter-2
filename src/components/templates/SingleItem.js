@@ -6,6 +6,8 @@ import SEO from '@/components/seo';
 
 import ItemCard from '@/components/ItemCard2';
 import { withStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
+import { withLanguage } from '@/utils/i18n';
 
 const styles = theme => ({
   root: {
@@ -34,12 +36,12 @@ const styles = theme => ({
 
 const ItemPage = props => {
   const { data, classes } = props;
-
+  const { i18n } = useTranslation();
   const item = data.item;
-
+  const title = withLanguage(i18n, data.item, 'title');
   return (
     <>
-      <SEO title="item" />
+      <SEO title={title} />
       <div className={classes.root}>
         <div className={classes.flexBoxParentDiv}>
           <ItemCard key={item.id} item={item} />
@@ -63,7 +65,11 @@ export const ItemPageQuery = graphql`
       detail_zh
       date
       productImage {
-        publicURL
+        childImageSharp {
+          fluid(maxHeight: 150) {
+            ...GatsbyImageSharpFluid
+          }
+        }
       }
     }
   }
