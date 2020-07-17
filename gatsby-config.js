@@ -1,4 +1,5 @@
-const SITE_URL = process.env.SITE_URL || 'http://localhost:8000'
+const SITE_URL = process.env.SITE_URL || 'http://localhost:8000';
+const GOOGLE_TRACKING_ID = process.env.GOOGLE_TRACKING_ID || 'UA-111111111-1';
 
 module.exports = {
   // must be here for sitemap plugin lol
@@ -7,14 +8,23 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it
+        trackingId: GOOGLE_TRACKING_ID,
+        // Defines where to place the tracking script - `true` in the head and `false` in the body
+        head: true,
+      },
+    },
+    {
       resolve: `gatsby-plugin-alias-imports`,
       options: {
         alias: {
           '@': 'src',
-          '@components': 'src/components'
+          '@components': 'src/components',
         },
-        extensions: []
-      }
+        extensions: [],
+      },
     },
     {
       resolve: 'gatsby-plugin-material-ui',
@@ -54,15 +64,15 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-remote-images",
+      resolve: 'gatsby-plugin-remote-images',
       options: {
-        nodeType: "Item",
-        imagePath: "imgSrc",
+        nodeType: 'Item',
+        imagePath: 'imgSrc',
         name: 'productImage',
-      }
+      },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
   ],
-}
+};

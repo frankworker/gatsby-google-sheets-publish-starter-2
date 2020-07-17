@@ -37,13 +37,13 @@ function ItemCard(props) {
 
   return (
     <Box>
+      <Typography gutterBottom variant="h5" component="h2">
+        {`${title}`}
+      </Typography>
       <Img
         alt={`Picture of ${title}`}
         fluid={item.productImage.childImageSharp.fluid}
       />
-      <Typography gutterBottom variant="h5" component="h2">
-        {`${title}`}
-      </Typography>
       <Typography variant="body2" color="textSecondary" component="p">
         {`${detail}`}
       </Typography>

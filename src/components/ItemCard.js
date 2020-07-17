@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { red } from '@material-ui/core/colors';
+
+import ShareButton from '@/components/ShareButton';
 
 import { useTranslation } from 'react-i18next';
 import { withLanguage } from '@/utils/i18n';
@@ -55,7 +54,7 @@ function ItemCard(props) {
         }
         action={
           <IconButton aria-label="share">
-            <ShareIcon />
+            <ShareButton id={item.id} />
           </IconButton>
         }
         title={`${title}`}
