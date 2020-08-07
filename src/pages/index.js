@@ -105,6 +105,7 @@ const IndexPage = props => {
   jsSearch.addDocuments(items)
 
   const onChange = (e) => {
+    setPage(0);
     setSearchQuery(e.target.value);
     setSearchResults(jsSearch.search(e.target.value))
   };
@@ -115,9 +116,9 @@ const IndexPage = props => {
       behavior: 'smooth'
     })
 }
-  function changePage(page) {
+  function changePage(event, page) {
     scrollToSectionTop();
-    setPage(page);
+    setPage(page-1);
   }
 
   const queryResults = searchQuery === "" ? items : searchResults
@@ -160,35 +161,9 @@ const IndexPage = props => {
 
           ))}
         </div>
-        { totalPages === 1 ? null :
-        <div>
-          <button
-            onClick={() => changePage(page - 1)}
-            disabled={page === 0}
-          >
-            <ArrowLeftIcon />
-          </button>
-          { pages.map((label, index) => (
-            <button
-              key={index}
-              onClick={() => changePage(index)}
-              disabled={page === index}
-            >
-              {label}
-            </button>
-          ))}
-          <button
-            onClick={() => changePage(page + 1)}
-            disabled={page === totalPages - 1}
-            >
-            <ArrowRightIcon />
-          </button>
-         
-        </div>
-      }
-         <Pagination variant="outlined" shape="rounded" count={totalPages} onChange={(event, page)=>{
-             console.log(page);
-             changePage(page} />
+        <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+         <Pagination variant="outlined" shape="rounded" count={totalPages} onChange={changePage} />
+             </Box>
       </div>
     </>
   );
