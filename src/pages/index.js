@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'gatsby';
+import * as JsSearch from "js-search"
 
 import Layout from '@/components/layout';
 import SEO from '@/components/seo';
-
 import ItemCard from '@/components/ItemCard'
-import { withStyles } from "@material-ui/core/styles";
+import { fade, withStyles } from "@material-ui/core/styles";
+
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import Box from '@material-ui/core/Box';
+
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import Pagination from '@material-ui/lab/Pagination';
 
 const styles = theme => ({
   root: {
@@ -30,24 +38,157 @@ const styles = theme => ({
       flex: "auto",
     },
   },
+  search: {
+    justifyContent: "center",
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
 })
 
 const IndexPage = props => {
-  const { data, classes } = props
 
-  const items = data.allItem.edges
+  // const [isLoading, setIsLoading] = useState(0);
+  const [searchResults, setSearchResults] = useState([]);
+  // const [search, setSearch] = useState(null);
+  // const [isError, setIsError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(0);
+  
+  const { data, classes } = props;
+
+  const pageSize = 9;
+
+  const items = data.allItem.edges;
+
+
+  var jsSearch = new JsSearch.Search(['node', 'id']);
+  jsSearch.addIndex(['node', 'title_en']);
+  jsSearch.addIndex(['node', 'detail_en'])
+  jsSearch.addIndex(['node', 'title_zh']);
+  jsSearch.addIndex(['node', 'detail_zh'])
+
+  jsSearch.addDocuments(items)
+
+  const onChange = (e) => {
+    setSearchQuery(e.target.value);
+    setSearchResults(jsSearch.search(e.target.value))
+  };
+
+  function scrollToSectionTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+}
+  function changePage(page) {
+    scrollToSectionTop();
+    setPage(page);
+  }
+
+  const queryResults = searchQuery === "" ? items : searchResults
+
+  const totalPages = Math.ceil(queryResults.length / pageSize);
+  const pages = [];
+  for(let index = 0; index < totalPages; index++) {
+    pages.push(index + 1);
+  }
+
+  const pagedQueryResults = queryResults.slice(page * pageSize, page * pageSize + pageSize);
 
   return (
     <>
       <SEO title="Home" />
       <div className={classes.root}>
-        <div className={classes.flexBoxParentDiv}>
-          {items.map((item) => (
+        <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={onChange}
+            />
+          </div>
+        </Box>
+          Number of items:
+              {queryResults.length}
 
-            <ItemCard key={item.node.id} item={item} />
+        <div className={classes.flexBoxParentDiv}>
+          {pagedQueryResults.map((item, index) => (
+
+            <ItemCard key={index} item={item} />
 
           ))}
         </div>
+        { totalPages === 1 ? null :
+        <div>
+          <button
+            onClick={() => changePage(page - 1)}
+            disabled={page === 0}
+          >
+            <ArrowLeftIcon />
+          </button>
+          { pages.map((label, index) => (
+            <button
+              key={index}
+              onClick={() => changePage(index)}
+              disabled={page === index}
+            >
+              {label}
+            </button>
+          ))}
+          <button
+            onClick={() => changePage(page + 1)}
+            disabled={page === totalPages - 1}
+            >
+            <ArrowRightIcon />
+          </button>
+         
+        </div>
+      }
+         <Pagination variant="outlined" shape="rounded" count={totalPages} onChange={(event, page)=>{
+             console.log(page);
+             changePage(page} />
       </div>
     </>
   );
@@ -55,7 +196,7 @@ const IndexPage = props => {
 
 export const query = graphql`
   query MyQuery {
-    allItem {
+    allItem(sort: {fields: datetime, order: DESC}) {
       edges {
         node {
           id
@@ -65,7 +206,7 @@ export const query = graphql`
           description_zh
           detail_en
           detail_zh
-          date
+          datetime
           productImage{
             publicURL
           }

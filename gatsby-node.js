@@ -98,7 +98,7 @@ exports.createPages = ({ actions, graphql }) => {
             description_zh
             detail_en
             detail_zh
-            date
+            datetime
             productImage {
               publicURL
             }

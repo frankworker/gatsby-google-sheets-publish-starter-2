@@ -63,7 +63,7 @@ export const ItemPageQuery = graphql`
       description_zh
       detail_en
       detail_zh
-      date
+      datetime
       productImage {
         childImageSharp {
           fluid(maxHeight: 150) {
