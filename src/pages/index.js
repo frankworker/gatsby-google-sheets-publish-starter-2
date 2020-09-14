@@ -11,9 +11,9 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Box from '@material-ui/core/Box';
 
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import Pagination from '@material-ui/lab/Pagination';
+// import Alert from '@material-ui/lab/Alert'
+
 
 const styles = theme => ({
     root: {
@@ -28,6 +28,7 @@ const styles = theme => ({
         display: "flex",
     },
     flexBoxParentDiv: {
+        padding : '16px',
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
@@ -61,12 +62,15 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        color: 'white',
     },
     inputRoot: {
-        color: 'inherit',
+        // color: 'inherit',
+        color: 'white',
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
+        color: 'white',
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
@@ -78,6 +82,18 @@ const styles = theme => ({
             },
         },
     },
+    sticky: {
+        position: 'fixed',
+        top: 50,
+        width: '100%',
+    },
+    itemNum :{
+        top: 100,
+        padding : '16px',
+        display: "flex",
+        color : 'white',
+        backgroundColor: theme.palette.background.paper,
+    }
 })
 
 const IndexPage = props => {
@@ -134,8 +150,11 @@ const IndexPage = props => {
     return (
         <>
             <SEO title="Home" />
+            {/* <Alert variant="outlined" severity="info">
+                This is an info alert — check it out!
+            </Alert> */}
             <div className={classes.root}>
-                <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+                <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper" className={classes.sticky}>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
@@ -150,9 +169,12 @@ const IndexPage = props => {
                             onChange={onChange}
                         />
                     </div>
+                    
                 </Box>
-          Number of items:
-              {queryResults.length}
+                <div className={classes.itemNum}>
+                     {'Number of items:' + 
+                    queryResults.length}
+                </div>
 
                 <div className={classes.flexBoxParentDiv}>
                     {pagedQueryResults.map((item, index) => (

@@ -22,17 +22,23 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {},
   title: {
+      display: 'none',
+    [theme.breakpoints.up("sm")]: {
+        display: 'block',
+        flexGrow: 1,
+    }
+  },
+  shortTitle:{
     flexGrow: 1,
+    [theme.breakpoints.up("sm")]: {
+        display: 'none',
+    }
   },
 }));
 
-const renderTitle = () => {
-  return { __html: 'Gatsby Google Sheets Publish Starter' };
-};
-
 export default function Header() {
   const classes = useStyles();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <>
       <AppBar position="fixed" className={classes.root}>
@@ -41,11 +47,21 @@ export default function Header() {
             <Typography
               variant="h1"
               className={`${classes.title} clickable`}
-              dangerouslySetInnerHTML={renderTitle()}
               onClick={() => {
                 navigate(getLocalizedPath(i18n, '/'));
               }}
-            />
+            >
+                {t('index.title')}
+            </Typography>
+            <Typography
+              variant="h1"
+              className={`${classes.shortTitle} clickable`}
+              onClick={() => {
+                navigate(getLocalizedPath(i18n, '/'));
+              }}
+            >
+                {t('index.shortTitle')}
+            </Typography>
             <LanguageSwitcher />
           </Toolbar>
         </Container>

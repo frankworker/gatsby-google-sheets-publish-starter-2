@@ -4,7 +4,8 @@
   "app.description": "This template uses Material-UI, and supports localization.",
   "lang.en": "English",
   "lang.zh": "中文",
-  "index.title": "Eng title",
+  "index.title": "Eng Gatsby Google Sheets Publish Starter",
+  "index.shortTitle":"EngGG",
   "site.keywords": "site.keywords",
   "site.description": "description"
 }
